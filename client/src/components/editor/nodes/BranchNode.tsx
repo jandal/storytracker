@@ -4,7 +4,7 @@ import { BaseNode } from './BaseNode';
 
 export function BranchNode({ selected, data }: NodeProps<BranchNodeData>) {
   return (
-    <BaseNode selected={selected} label="Branch" icon="🔀" color="bg-orange-800">
+    <BaseNode selected={selected} label={data.label || 'Branch'} icon="🔀" color="bg-orange-800">
       <p className="text-sm text-orange-200 mb-2">{data.conditions.length} condition(s)</p>
       <div className="space-y-1">
         {data.conditions.slice(0, 2).map((cond) => (

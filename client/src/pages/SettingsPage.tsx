@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { settingsApi } from '../api/client';
+import { Layout } from '../components/layout/Layout';
 
 const CLAUDE_MODELS = [
   { id: 'claude-sonnet-4-5-20250929', name: 'Claude Sonnet 4.5 (Balanced)' },
@@ -11,7 +12,6 @@ const CLAUDE_MODELS = [
 export function SettingsPage() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
 
   const [apiKey, setApiKey] = useState('');
   const [selectedModel, setSelectedModel] = useState('claude-sonnet-4-5-20250929');
@@ -112,28 +112,10 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/home')}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
-            >
-              ← Home
-            </button>
-            <h1 className="text-3xl font-bold text-white">Settings</h1>
-          </div>
-          <button
-            onClick={() => {
-              logout();
-              navigate('/login');
-            }}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition"
-          >
-            Log Out
-          </button>
-        </div>
+    <Layout breadcrumbs={[{ label: 'Settings', path: '/settings' }]}>
+      {/* Main content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-2xl mx-auto p-8">
 
         {/* User Info */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
@@ -243,7 +225,8 @@ export function SettingsPage() {
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -6,7 +6,7 @@ export function StartNode({ selected, data }: NodeProps<StartNodeData>) {
   return (
     <BaseNode
       selected={selected}
-      label="Start"
+      label={data.label || 'Start'}
       icon="▶️"
       color="bg-green-800"
       hasInput={false}

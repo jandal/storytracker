@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { campaignsApi } from '../api/client';
+import { Layout } from '../components/layout/Layout';
 
 export function CampaignListPage() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -19,6 +19,11 @@ export function CampaignListPage() {
   const [sceneName, setSceneName] = useState('');
   const [sceneDescription, setSceneDescription] = useState('');
   const [isCreatingScene, setIsCreatingScene] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingCampaignId, setEditingCampaignId] = useState('');
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -63,23 +68,50 @@ export function CampaignListPage() {
     }
   };
 
-  const handleEditCampaign = async (campaignId: string) => {
-    try {
-      const response = await campaignsApi.getScenes(campaignId);
-      const scenes = response.data;
+  const handleOpenEditModal = (campaign: any) => {
+    setEditingCampaignId(campaign.id);
+    setEditName(campaign.name);
+    setEditDescription(campaign.description || '');
+    setShowEditModal(true);
+  };
 
-      if (scenes && scenes.length > 0) {
-        // Navigate to the first scene
-        navigate(`/campaigns/${campaignId}/scenes/${scenes[0].id}`);
-      } else {
-        // Show modal to create first scene
-        setSelectedCampaignId(campaignId);
-        setShowSceneModal(true);
-      }
-    } catch (err) {
-      console.error('Failed to load scenes:', err);
-      setError('Failed to load campaign scenes');
+  const handleUpdateCampaign = async () => {
+    if (!editName.trim()) {
+      setError('Campaign name is required');
+      return;
     }
+
+    try {
+      setIsUpdating(true);
+      setError('');
+      await campaignsApi.updateCampaign(editingCampaignId, {
+        name: editName,
+        description: editDescription,
+      });
+
+      // Update local campaigns list
+      setCampaigns(
+        campaigns.map((c) =>
+          c.id === editingCampaignId
+            ? { ...c, name: editName, description: editDescription }
+            : c
+        )
+      );
+
+      setShowEditModal(false);
+      setEditingCampaignId('');
+      setEditName('');
+      setEditDescription('');
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Failed to update campaign');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleEditCampaign = (campaignId: string) => {
+    // Navigate to scene management page
+    navigate(`/campaigns/${campaignId}/scenes`);
   };
 
   const handleCreateScene = async () => {
@@ -103,34 +135,10 @@ export function CampaignListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700 p-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">StoryTracker</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-300">{user?.name || user?.email}</span>
-            <Link
-              to="/settings"
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
-            >
-              Settings
-            </Link>
-            <button
-              onClick={() => {
-                logout();
-                navigate('/login');
-              }}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition"
-            >
-              Log Out
-            </button>
-          </div>
-        </div>
-      </nav>
-
+    <Layout breadcrumbs={[{ label: 'Campaigns', path: '/campaigns' }]}>
       {/* Main content */}
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-7xl mx-auto p-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-white">Campaigns</h2>
           <button
@@ -172,12 +180,20 @@ export function CampaignListPage() {
               >
                 <h3 className="text-xl font-semibold text-white mb-2">{campaign.name}</h3>
                 <p className="text-gray-400 mb-4">{campaign.description || 'No description'}</p>
-                <button
-                  onClick={() => handleEditCampaign(campaign.id)}
-                  className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
-                >
-                  Edit →
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleOpenEditModal(campaign)}
+                    className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition text-sm"
+                  >
+                    ✏️ Edit Info
+                  </button>
+                  <button
+                    onClick={() => handleEditCampaign(campaign.id)}
+                    className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
+                  >
+                    Scenes →
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -314,6 +330,73 @@ export function CampaignListPage() {
           </div>
         </div>
       )}
-    </div>
+
+      {/* Edit Campaign Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4">
+            <h3 className="text-2xl font-bold text-white mb-4">Edit Campaign</h3>
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500 text-red-200 rounded text-sm">
+                {error}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Campaign Name
+                </label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  placeholder="e.g., Dragon's Quest"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Description (optional)
+                </label>
+                <textarea
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  placeholder="Describe your campaign..."
+                  rows={3}
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowEditModal(false);
+                    setEditingCampaignId('');
+                    setEditName('');
+                    setEditDescription('');
+                    setError('');
+                  }}
+                  disabled={isUpdating}
+                  className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 text-white rounded transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdateCampaign}
+                  disabled={isUpdating}
+                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded transition font-semibold"
+                >
+                  {isUpdating ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+    </Layout>
   );
 }

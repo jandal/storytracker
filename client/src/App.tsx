@@ -6,6 +6,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { CampaignListPage } from './pages/CampaignListPage';
+import { SceneManagementPage } from './pages/SceneManagementPage';
 import { EditorPage } from './pages/EditorPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -42,6 +43,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CampaignListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/campaigns/:campaignId/scenes"
+          element={
+            <ProtectedRoute>
+              <SceneManagementPage />
             </ProtectedRoute>
           }
         />

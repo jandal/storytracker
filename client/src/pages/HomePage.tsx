@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
+import { Layout } from '../components/layout/Layout';
 
 export function HomePage() {
   const navigate = useNavigate();
-  const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
@@ -14,25 +14,10 @@ export function HomePage() {
   }, [token, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700 p-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">StoryTracker</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-300">{user?.name || user?.email}</span>
-            <Link
-              to="/settings"
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
-            >
-              Settings
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <Layout breadcrumbs={[{ label: 'Home', path: '/' }]}>
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-7xl mx-auto p-8">
         <div className="text-center py-16">
           <h2 className="text-4xl font-bold text-white mb-4">Welcome to StoryTracker</h2>
           <p className="text-gray-300 text-lg mb-8">
@@ -67,29 +52,9 @@ export function HomePage() {
               <p className="text-gray-400">Generate content with Claude</p>
             </Link>
           </div>
-
-          <div className="mt-12 p-6 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-            <h3 className="text-xl font-semibold text-blue-300 mb-2">Phase 3 Complete!</h3>
-            <p className="text-gray-400 mb-4">
-              Node editor canvas is ready! Start creating your campaigns.
-            </p>
-            <div className="flex gap-4">
-              <Link
-                to="/campaigns"
-                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
-              >
-                Create Campaign →
-              </Link>
-              <Link
-                to="/settings"
-                className="inline-block px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
-              >
-                Configure API Key
-              </Link>
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactFlowProvider, useReactFlow } from 'reactflow';
 import { useEditorStore } from '../stores/editorStore';
@@ -7,6 +7,7 @@ import { NodePalette } from '../components/editor/NodePalette';
 import { PropertiesPanel } from '../components/editor/PropertiesPanel';
 import { VariablesPanel } from '../components/editor/VariablesPanel';
 import { campaignsApi } from '../api/client';
+import { Layout } from '../components/layout/Layout';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomNode } from '../shared/src/types';
 
@@ -14,8 +15,11 @@ function EditorContent() {
   const navigate = useNavigate();
   const { sceneId, campaignId } = useParams<{ sceneId: string; campaignId: string }>();
   const { screenToFlowPosition } = useReactFlow();
-  const { setScene, addNode, currentSceneName } = useEditorStore();
+  const { setScene, addNode, currentSceneName, nodes, edges, viewport } = useEditorStore();
   const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'variables'>('properties');
+  const [isSaving, setIsSaving] = useState(false);
+  const [campaignName, setCampaignName] = useState('Campaign');
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!sceneId || !campaignId) {
@@ -26,6 +30,11 @@ function EditorContent() {
     // Load scene from API
     const loadScene = async () => {
       try {
+        // Load campaign name
+        const campaignRes = await campaignsApi.getCampaign(campaignId);
+        setCampaignName(campaignRes.data.name);
+
+        // Load scene
         const response = await campaignsApi.getScene(campaignId, sceneId);
         const scene = response.data;
 
@@ -44,6 +53,43 @@ function EditorContent() {
 
     loadScene();
   }, [sceneId, campaignId, navigate, setScene]);
+
+  // Auto-save scene graph on changes
+  useEffect(() => {
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Only save if we have sceneId and campaignId
+    if (!sceneId || !campaignId) return;
+
+    // Set a new timeout for debounced save
+    setIsSaving(true);
+    saveTimeoutRef.current = setTimeout(async () => {
+      try {
+        // Stringify nodes and edges for API
+        await campaignsApi.saveSceneGraph(
+          campaignId,
+          sceneId,
+          JSON.stringify(nodes),
+          JSON.stringify(edges),
+          JSON.stringify(viewport)
+        );
+      } catch (error) {
+        console.error('Failed to auto-save scene:', error);
+      } finally {
+        setIsSaving(false);
+      }
+    }, 2500); // Save 2.5 seconds after last change
+
+    // Cleanup on unmount
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [nodes, edges, viewport, sceneId, campaignId]);
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
@@ -81,21 +127,16 @@ function EditorContent() {
   );
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900">
-      {/* Header */}
-      <div className="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Story Editor</h1>
-          <p className="text-gray-400 text-sm">{currentSceneName}</p>
-        </div>
-        <button
-          onClick={() => navigate('/campaigns')}
-          className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
-        >
-          ← Back
-        </button>
-      </div>
-
+    <Layout
+      breadcrumbs={[
+        { label: 'Campaigns', path: '/campaigns' },
+        { label: campaignName, path: `/campaigns/${campaignId}/scenes` },
+        { label: currentSceneName, path: `/campaigns/${campaignId}/scenes/${sceneId}` },
+      ]}
+      headerExtra={
+        isSaving && <span className="text-blue-400 text-sm">● Saving...</span>
+      }
+    >
       {/* Main editor area */}
       <div className="flex flex-1 overflow-hidden">
         <NodePalette />
@@ -136,7 +177,7 @@ function EditorContent() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

@@ -6,7 +6,7 @@ export function CommentNode({ selected, data }: NodeProps<CommentNodeData>) {
   return (
     <BaseNode
       selected={selected}
-      label="Comment"
+      label={data.label || 'Comment'}
       icon="💬"
       color="bg-gray-700"
       hasInput={false}

@@ -4,7 +4,7 @@ import { BaseNode } from './BaseNode';
 
 export function ChoiceNode({ selected, data }: NodeProps<ChoiceNodeData>) {
   return (
-    <BaseNode selected={selected} label="Choice" icon="🎯" color="bg-purple-800">
+    <BaseNode selected={selected} label={data.label || 'Choice'} icon="🎯" color="bg-purple-800">
       <p className="text-sm text-purple-200 font-semibold mb-2">{data.prompt || 'Question?'}</p>
       <div className="space-y-1">
         {data.choices.slice(0, 2).map((choice) => (
