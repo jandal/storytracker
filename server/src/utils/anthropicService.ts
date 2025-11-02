@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { decryptApiKey } from './encryption';
 
-export type ModelType = 'claude-opus-4-1' | 'claude-sonnet-4-20250514' | 'claude-haiku-3-5';
+export type ModelType = 'claude-sonnet-4-5-20250929' | 'claude-haiku-4-5-20251001';
 
 interface AnthropicClientOptions {
   apiKey: string;

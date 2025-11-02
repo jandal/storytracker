@@ -4,9 +4,8 @@ import { useAuthStore } from '../stores/authStore';
 import { settingsApi } from '../api/client';
 
 const CLAUDE_MODELS = [
-  { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet (Balanced)' },
-  { id: 'claude-3-opus-20250219', name: 'Claude 3 Opus (Most Capable)' },
-  { id: 'claude-3-haiku-20250122', name: 'Claude 3 Haiku (Fast)' },
+  { id: 'claude-sonnet-4-5-20250929', name: 'Claude Sonnet 4.5 (Balanced)' },
+  { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5 (Fast)' },
 ];
 
 export function SettingsPage() {
@@ -15,7 +14,7 @@ export function SettingsPage() {
   const logout = useAuthStore((state) => state.logout);
 
   const [apiKey, setApiKey] = useState('');
-  const [selectedModel, setSelectedModel] = useState('claude-3-5-sonnet-20241022');
+  const [selectedModel, setSelectedModel] = useState('claude-sonnet-4-5-20250929');
   const [hasApiKey, setHasApiKey] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
@@ -116,7 +115,15 @@ export function SettingsPage() {
     <div className="min-h-screen bg-gray-900 p-8">
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Settings</h1>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate('/home')}
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
+            >
+              ← Home
+            </button>
+            <h1 className="text-3xl font-bold text-white">Settings</h1>
+          </div>
           <button
             onClick={() => {
               logout();

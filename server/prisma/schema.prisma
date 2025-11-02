@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -54,10 +54,10 @@ model Scene {
   campaignId  String
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  // Node graph stored as JSONB
-  nodes       Json     @default("[]") // Array of node objects
-  edges       Json     @default("[]") // Array of edge objects
-  viewport    Json?    // { x, y, zoom }
+  // Node graph stored as JSON strings
+  nodes       String     @default("[]") // Array of node objects (JSON string)
+  edges       String     @default("[]") // Array of edge objects (JSON string)
+  viewport    String?    // { x, y, zoom } (JSON string)
 
   variables   LocalVariable[]
 
@@ -74,8 +74,8 @@ model NPC {
   class       String?
   level       Int?
 
-  // D&D Stats (as JSON object)
-  stats       Json?    // { str, dex, con, int, wis, cha }
+  // D&D Stats (as JSON string)
+  stats       String?    // { str, dex, con, int, wis, cha }
   armorClass  Int?
   hitPoints   Int?
 
@@ -102,8 +102,8 @@ model Quest {
   id          String      @id @default(cuid())
   name        String
   description String
-  objectives  Json        // Array of { id, text, completed }
-  status      QuestStatus @default(NOT_STARTED)
+  objectives  String      // Array of { id, text, completed } (JSON string)
+  status      String      @default("NOT_STARTED") // NOT_STARTED, ACTIVE, COMPLETED, FAILED
 
   campaignId  String
   campaign    Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
@@ -114,18 +114,11 @@ model Quest {
   @@index([campaignId])
 }
 
-enum QuestStatus {
-  NOT_STARTED
-  ACTIVE
-  COMPLETED
-  FAILED
-}
-
 model GlobalVariable {
   id          String       @id @default(cuid())
   name        String
-  type        VariableType
-  value       Json         // Stores any type
+  type        String       // STRING, NUMBER, BOOLEAN
+  value       String       // Stores any type (JSON string for complex types)
 
   campaignId  String
   campaign    Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
@@ -137,20 +130,14 @@ model GlobalVariable {
 model LocalVariable {
   id          String       @id @default(cuid())
   name        String
-  type        VariableType
-  value       Json
+  type        String       // STRING, NUMBER, BOOLEAN
+  value       String       // JSON string for complex types
 
   sceneId     String
   scene       Scene        @relation(fields: [sceneId], references: [id], onDelete: Cascade)
 
   @@unique([sceneId, name])
   @@index([sceneId])
-}
-
-enum VariableType {
-  STRING
-  NUMBER
-  BOOLEAN
 }
 
 model Session {

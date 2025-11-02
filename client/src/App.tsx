@@ -30,6 +30,14 @@ function App() {
           }
         />
         <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/campaigns"
           element={
             <ProtectedRoute>

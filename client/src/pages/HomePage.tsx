@@ -40,23 +40,32 @@ export function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <Link
+              to="/campaigns"
+              className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-blue-500 hover:bg-gray-750 transition cursor-pointer"
+            >
               <div className="text-4xl mb-4">📝</div>
               <h3 className="text-xl font-semibold text-white mb-2">Story Editor</h3>
               <p className="text-gray-400">Visual node-based story creation</p>
-            </div>
+            </Link>
 
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <Link
+              to="/campaigns"
+              className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-blue-500 hover:bg-gray-750 transition cursor-pointer"
+            >
               <div className="text-4xl mb-4">🧙</div>
               <h3 className="text-xl font-semibold text-white mb-2">NPC Management</h3>
               <p className="text-gray-400">Track NPCs, quests, and encounters</p>
-            </div>
+            </Link>
 
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <Link
+              to="/settings"
+              className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-blue-500 hover:bg-gray-750 transition cursor-pointer"
+            >
               <div className="text-4xl mb-4">✨</div>
               <h3 className="text-xl font-semibold text-white mb-2">AI Assistant</h3>
               <p className="text-gray-400">Generate content with Claude</p>
-            </div>
+            </Link>
           </div>
 
           <div className="mt-12 p-6 bg-blue-500/10 border border-blue-500/30 rounded-lg">
