@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
+import authRoutes from './routes/auth';
+import settingsRoutes from './routes/settings';
 
 // Load environment variables
 dotenv.config();
@@ -22,10 +24,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Basic routes (to be implemented)
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working' });
-});
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {

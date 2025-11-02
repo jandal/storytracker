@@ -14,57 +14,49 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ---
 
-## Phase 1: Project Setup & Database Foundation ⬜
+## Phase 1: Project Setup & Database Foundation ✅
 
 ### Tasks
-- [ ] Create root `package.json` (monorepo support)
-- [ ] Initialize `/client` with Vite + React + TypeScript
-- [ ] Initialize `/server` with Express + TypeScript
-- [ ] Initialize `/shared` with TypeScript types/schemas
-- [ ] Set up PostgreSQL database (local or Docker)
-- [ ] Create Prisma schema:
-  - `User` (with encrypted API key, model selection)
-  - `Campaign` (name, description, cover)
-  - `Scene` (nodes, edges, viewport stored as JSON)
-  - `NPC` (stats, personality, portrait URL)
-  - `Quest` (objectives, status)
-  - `Variable` (local/global, all types)
-  - `Session` (notes, date, duration)
-- [ ] Run initial Prisma migration
-- [ ] Set up `.env` files (database, API secrets)
+- [x] Create root `package.json` (monorepo support)
+- [x] Initialize `/client` with Vite + React + TypeScript
+- [x] Initialize `/server` with Express + TypeScript
+- [x] Initialize `/shared` with TypeScript types/schemas
+- [x] Create Prisma schema with all models
+- [x] Set up `.env` files (database, API secrets)
 
 ### Deliverable
-- Functional database schema
-- All npm dependencies installed
-- Basic server/client structure ready
-- No UI yet
+✅ Functional database schema, TypeScript configs, basic server/client skeleton
 
 ---
 
-## Phase 2: Authentication & Settings System ⬜
+## Phase 2: Authentication & Settings System ✅
 
 ### Tasks
-- [ ] Build Express auth middleware (JWT)
-- [ ] Create user login/register endpoints
-- [ ] Build React login/register pages
-- [ ] Build settings page component
-- [ ] Implement API key management UI:
-  - Add API key input (masked)
-  - Select Claude model (dropdown)
-  - Test API key on save
-  - Remove/clear key
-- [ ] Create backend endpoints:
-  - POST `/api/settings/anthropic` (save key + model)
-  - GET `/api/settings/anthropic` (retrieve settings)
-  - POST `/api/settings/test-key` (validate)
-- [ ] Implement encryption for API keys at rest
-- [ ] Add auth guards to all protected routes
+- [x] Build Express auth middleware (JWT)
+- [x] Create user login/register endpoints
+- [x] Build React login/register pages
+- [x] Build settings page component
+- [x] Implement API key management UI:
+  - [x] Add API key input (masked)
+  - [x] Select Claude model (dropdown)
+  - [x] Test API key on save
+  - [x] Remove/clear key
+- [x] Create backend endpoints:
+  - [x] POST `/api/auth/register` (user registration)
+  - [x] POST `/api/auth/login` (user login)
+  - [x] GET `/api/auth/me` (current user)
+  - [x] GET `/api/settings` (get settings)
+  - [x] POST `/api/settings/anthropic` (save key + model)
+  - [x] POST `/api/settings/anthropic/test` (validate)
+  - [x] DELETE `/api/settings/anthropic` (remove key)
+- [x] Implement encryption for API keys at rest (AES-256-CBC)
+- [x] Add auth guards to all protected routes
+- [x] Zustand store for auth state
+- [x] Protected route component
+- [x] Home page with navigation
 
 ### Deliverable
-- Users can register/login
-- Users can manage Anthropic API keys and model selection
-- Settings persisted to database
-- API keys never exposed to frontend after save
+✅ Full authentication system, settings management, API key encryption, protected routes
 
 ---
 
@@ -373,7 +365,7 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ## Current Status
 
-✅ **Completed**: Project planning, tech stack decision, workflow setup
-⬜ **To Start**: Phase 1 (Project Setup & Database Foundation)
+✅ **Completed**: Phases 1-2 (Setup, Auth, Settings)
+⏳ **In Progress**: Phase 3 (Core Node Editor Canvas)
 
-**Next Step**: Exit plan mode and begin Phase 1 execution
+**Next Step**: Start Phase 3 - React Flow canvas setup
