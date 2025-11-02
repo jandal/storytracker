@@ -47,7 +47,16 @@ export function EditorCanvas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(storeNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(storeEdges);
 
-  // Sync local state to store
+  // Sync store to local state (when store changes, update canvas)
+  useEffect(() => {
+    setNodes(storeNodes);
+  }, [storeNodes, setNodes]);
+
+  useEffect(() => {
+    setEdges(storeEdges);
+  }, [storeEdges, setEdges]);
+
+  // Sync local state to store (when canvas changes, update store)
   useEffect(() => {
     setStoreNodes(nodes);
   }, [nodes, setStoreNodes]);
