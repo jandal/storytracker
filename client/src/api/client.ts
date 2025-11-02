@@ -128,4 +128,46 @@ export const campaignsApi = {
     api.patch(`/campaigns/${campaignId}/scenes/reorder`, { sceneOrders }),
 };
 
+// ============ NPCs Endpoints ============
+export const npcsApi = {
+  getNPCs: (campaignId: string) =>
+    api.get(`/npcs/campaigns/${campaignId}`),
+
+  getNPC: (npcId: string) =>
+    api.get(`/npcs/${npcId}`),
+
+  createNPC: (campaignId: string, data: any) =>
+    api.post(`/npcs/campaigns/${campaignId}`, data),
+
+  updateNPC: (npcId: string, data: any) =>
+    api.patch(`/npcs/${npcId}`, data),
+
+  deleteNPC: (npcId: string) =>
+    api.delete(`/npcs/${npcId}`),
+};
+
+// ============ Quests Endpoints ============
+export const questsApi = {
+  getQuests: (campaignId: string) =>
+    api.get(`/quests/campaigns/${campaignId}`),
+
+  getQuest: (questId: string) =>
+    api.get(`/quests/${questId}`),
+
+  createQuest: (campaignId: string, name: string, description: string, objectives?: string[]) =>
+    api.post(`/quests/campaigns/${campaignId}`, { name, description, objectives }),
+
+  updateQuest: (questId: string, data: any) =>
+    api.patch(`/quests/${questId}`, data),
+
+  updateQuestStatus: (questId: string, status: string) =>
+    api.patch(`/quests/${questId}/status`, { status }),
+
+  updateQuestObjective: (questId: string, objectiveId: string, completed: boolean) =>
+    api.patch(`/quests/${questId}/objectives/${objectiveId}`, { completed }),
+
+  deleteQuest: (questId: string) =>
+    api.delete(`/quests/${questId}`),
+};
+
 export default api;

@@ -6,6 +6,8 @@ import authRoutes from './routes/auth';
 import settingsRoutes from './routes/settings';
 import variableRoutes from './routes/variables';
 import campaignRoutes from './routes/campaigns';
+import npcRoutes from './routes/npcs';
+import questRoutes from './routes/quests';
 
 // Load environment variables
 dotenv.config();
@@ -31,6 +33,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/variables', variableRoutes);
 app.use('/api/campaigns', campaignRoutes);
+app.use('/api/npcs', npcRoutes);
+app.use('/api/quests', questRoutes);
 
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {
