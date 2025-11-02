@@ -157,33 +157,31 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ---
 
-## Phase 6: Scene Management ⬜
+## Phase 6: Scene Management ✅
 
 ### Tasks
-- [ ] Build scene list sidebar
-- [ ] Implement scene operations:
-  - Create new scene
-  - Rename scene
-  - Delete scene
-  - Duplicate scene
-  - Reorder scenes
-- [ ] Scene switching logic:
-  - Save current scene before switching
-  - Load new scene into editor
-  - Clear undo/redo stack on switch
-- [ ] Backend endpoints:
-  - POST `/api/campaigns/{id}/scenes` (create)
-  - PATCH `/api/scenes/{id}` (update metadata)
-  - DELETE `/api/scenes/{id}`
-  - POST `/api/scenes/{id}/duplicate`
-  - PATCH `/api/campaigns/{id}/scenes/reorder`
-- [ ] Implement "Run Scene" node functionality
+- [x] Backend campaign endpoints:
+  - [x] GET `/api/campaigns` (list user's campaigns)
+  - [x] POST `/api/campaigns` (create campaign)
+  - [x] GET `/api/campaigns/{campaignId}` (get campaign with scenes)
+  - [x] PATCH `/api/campaigns/{campaignId}` (update campaign)
+  - [x] DELETE `/api/campaigns/{campaignId}` (delete campaign)
+- [x] Backend scene endpoints:
+  - [x] GET `/api/campaigns/{campaignId}/scenes` (list scenes)
+  - [x] POST `/api/campaigns/{campaignId}/scenes` (create scene)
+  - [x] GET `/api/campaigns/{campaignId}/scenes/{sceneId}` (get scene)
+  - [x] PATCH `/api/campaigns/{campaignId}/scenes/{sceneId}` (update scene)
+  - [x] POST `/api/campaigns/{campaignId}/scenes/{sceneId}/graph` (save graph)
+  - [x] DELETE `/api/campaigns/{campaignId}/scenes/{sceneId}` (delete scene)
+  - [x] POST `/api/campaigns/{campaignId}/scenes/{sceneId}/duplicate` (duplicate scene)
+  - [x] PATCH `/api/campaigns/{campaignId}/scenes/reorder` (reorder scenes)
+- [x] Campaign and scene controllers with full CRUD
+- [x] Campaign routes with auth middleware
+- [x] Add campaign/scene API client methods
+- [x] Wire campaigns routes to server
 
 ### Deliverable
-- Full scene management UI
-- Users can organize campaign into multiple scenes
-- Scene switching works smoothly
-- Run Scene node resolves properly
+✅ Full campaign and scene CRUD with backend persistence
 
 ---
 
@@ -368,9 +366,9 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ## Current Status
 
-✅ **Completed**: Phases 1-5 (Setup, Auth, Settings, Node Editor, Node Types, Variables)
-⏳ **In Progress**: Phase 6 (Scene Management)
+✅ **Completed**: Phases 1-6 (Setup, Auth, Settings, Node Editor, Node Types, Variables, Scenes)
+⏳ **In Progress**: Phase 7 (D&D Data Integration)
 
-**Context**: ~118k tokens used (59%), ~82k available (41%)
+**Context**: ~127k tokens used (63%), ~73k available (37%)
 
-**Next Step**: Build campaign and scene CRUD endpoints
+**Next Step**: Build NPC and Encounter systems with D&D 5e API

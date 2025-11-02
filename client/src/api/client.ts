@@ -87,4 +87,45 @@ export const variablesApi = {
     api.delete(`/variables/local/${variableId}`),
 };
 
+// ============ Campaigns Endpoints ============
+export const campaignsApi = {
+  // Campaigns
+  getAllCampaigns: () =>
+    api.get('/campaigns'),
+
+  getCampaign: (campaignId: string) =>
+    api.get(`/campaigns/${campaignId}`),
+
+  createCampaign: (name: string, description?: string) =>
+    api.post('/campaigns', { name, description }),
+
+  updateCampaign: (campaignId: string, data: any) =>
+    api.patch(`/campaigns/${campaignId}`, data),
+
+  deleteCampaign: (campaignId: string) =>
+    api.delete(`/campaigns/${campaignId}`),
+
+  // Scenes
+  getScenes: (campaignId: string) =>
+    api.get(`/campaigns/${campaignId}/scenes`),
+
+  createScene: (campaignId: string, name: string, description?: string) =>
+    api.post(`/campaigns/${campaignId}/scenes`, { name, description }),
+
+  updateScene: (campaignId: string, sceneId: string, data: any) =>
+    api.patch(`/campaigns/${campaignId}/scenes/${sceneId}`, data),
+
+  saveSceneGraph: (campaignId: string, sceneId: string, nodes: any, edges: any, viewport?: any) =>
+    api.post(`/campaigns/${campaignId}/scenes/${sceneId}/graph`, { nodes, edges, viewport }),
+
+  deleteScene: (campaignId: string, sceneId: string) =>
+    api.delete(`/campaigns/${campaignId}/scenes/${sceneId}`),
+
+  duplicateScene: (campaignId: string, sceneId: string, name?: string) =>
+    api.post(`/campaigns/${campaignId}/scenes/${sceneId}/duplicate`, { name }),
+
+  reorderScenes: (campaignId: string, sceneOrders: any) =>
+    api.patch(`/campaigns/${campaignId}/scenes/reorder`, { sceneOrders }),
+};
+
 export default api;

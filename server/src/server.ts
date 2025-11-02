@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import authRoutes from './routes/auth';
 import settingsRoutes from './routes/settings';
 import variableRoutes from './routes/variables';
+import campaignRoutes from './routes/campaigns';
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +30,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/variables', variableRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {
