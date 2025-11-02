@@ -1,18 +1,20 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactFlowProvider, useReactFlow } from 'reactflow';
 import { useEditorStore } from '../stores/editorStore';
 import { EditorCanvas } from '../components/editor/EditorCanvas';
 import { NodePalette } from '../components/editor/NodePalette';
 import { PropertiesPanel } from '../components/editor/PropertiesPanel';
+import { VariablesPanel } from '../components/editor/VariablesPanel';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomNode } from '../shared/src/types';
 
 function EditorContent() {
   const navigate = useNavigate();
-  const { sceneId } = useParams<{ sceneId: string }>();
+  const { sceneId, campaignId } = useParams<{ sceneId: string; campaignId: string }>();
   const { screenToFlowPosition } = useReactFlow();
   const { setScene, addNode, currentSceneName } = useEditorStore();
+  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'variables'>('properties');
 
   useEffect(() => {
     if (!sceneId) {
@@ -82,7 +84,39 @@ function EditorContent() {
         <div className="flex-1" onDragOver={onDragOver} onDrop={onDrop}>
           <EditorCanvas />
         </div>
-        <PropertiesPanel />
+
+        {/* Right panel with tabs */}
+        <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col">
+          <div className="flex border-b border-gray-700">
+            <button
+              onClick={() => setRightPanelTab('properties')}
+              className={`flex-1 px-4 py-2 text-sm font-medium transition ${
+                rightPanelTab === 'properties'
+                  ? 'text-blue-400 border-b-2 border-blue-400'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              Properties
+            </button>
+            <button
+              onClick={() => setRightPanelTab('variables')}
+              className={`flex-1 px-4 py-2 text-sm font-medium transition ${
+                rightPanelTab === 'variables'
+                  ? 'text-blue-400 border-b-2 border-blue-400'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              Variables
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            {rightPanelTab === 'properties' ? (
+              <PropertiesPanel />
+            ) : (
+              sceneId && campaignId && <VariablesPanel sceneId={sceneId} campaignId={campaignId} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

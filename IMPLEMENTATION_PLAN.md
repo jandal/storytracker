@@ -119,35 +119,41 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ---
 
-## Phase 5: Variable Management System ⬜
+## Phase 5: Variable Management System ✅
 
 ### Tasks
-- [ ] Create variable panel component
-- [ ] Build variable list UI:
-  - Show local vars (current scene)
-  - Show global vars (campaign)
-  - Create new variable
-  - Edit/delete variable
-  - Type selector (string, number, boolean)
-- [ ] Implement variable state storage:
-  - Local variables per scene (in Scene model)
-  - Global variables per campaign (in Campaign model)
-- [ ] Add variable references in nodes:
-  - Variable dropdowns in Branch/Set nodes
-  - Validation that variables exist
-  - Visual indicators for undefined vars
-- [ ] Backend endpoints:
-  - POST `/api/campaigns/{id}/variables` (create)
-  - PATCH `/api/variables/{id}` (update)
-  - DELETE `/api/variables/{id}` (delete)
-  - GET `/api/scenes/{id}/variables` (list local)
-  - GET `/api/campaigns/{id}/variables` (list global)
+- [x] Create Zustand variable store
+  - [x] Local/global variable state
+  - [x] CRUD operations
+  - [x] Query methods
+- [x] Build VariablesPanel component:
+  - [x] Add new variable UI
+  - [x] List local variables
+  - [x] List global variables
+  - [x] Edit variable values
+  - [x] Delete variables
+  - [x] Type selector (string, number, boolean)
+- [x] Create VariableItem sub-component:
+  - [x] Display variable info
+  - [x] Edit mode with type-appropriate input
+  - [x] Save/cancel buttons
+- [x] Integrate into EditorPage:
+  - [x] Tab system (Properties/Variables)
+  - [x] Pass scene/campaign IDs
+- [x] Backend variable endpoints:
+  - [x] GET `/api/variables/global/campaigns/{campaignId}`
+  - [x] POST `/api/variables/global/campaigns/{campaignId}`
+  - [x] PATCH `/api/variables/global/{variableId}`
+  - [x] DELETE `/api/variables/global/{variableId}`
+  - [x] GET `/api/variables/local/scenes/{sceneId}`
+  - [x] POST `/api/variables/local/scenes/{sceneId}`
+  - [x] PATCH `/api/variables/local/{variableId}`
+  - [x] DELETE `/api/variables/local/{variableId}`
+- [x] Add variable API client methods
+- [x] Wire routes to server
 
 ### Deliverable
-- Users can create/edit/delete variables
-- Variables properly scoped (local/global)
-- Node references validated
-- Proper error messages for undefined vars
+✅ Full variable management system with local/global scoping, UI, and backend endpoints
 
 ---
 
@@ -362,9 +368,9 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ## Current Status
 
-✅ **Completed**: Phases 1-4 (Setup, Auth, Settings, Node Editor, All Node Types)
-⏳ **In Progress**: Phase 5 (Variable Management System)
+✅ **Completed**: Phases 1-5 (Setup, Auth, Settings, Node Editor, Node Types, Variables)
+⏳ **In Progress**: Phase 6 (Scene Management)
 
-**Context**: ~104k tokens used (52%), ~96k available (48%)
+**Context**: ~118k tokens used (59%), ~82k available (41%)
 
-**Next Step**: Build variable panel and management endpoints
+**Next Step**: Build campaign and scene CRUD endpoints

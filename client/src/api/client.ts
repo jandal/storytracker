@@ -58,4 +58,33 @@ export const settingsApi = {
     api.delete('/settings/anthropic'),
 };
 
+// ============ Variables Endpoints ============
+export const variablesApi = {
+  // Global variables
+  getGlobalVariables: (campaignId: string) =>
+    api.get(`/variables/global/campaigns/${campaignId}`),
+
+  createGlobalVariable: (campaignId: string, name: string, type: string, value?: any) =>
+    api.post(`/variables/global/campaigns/${campaignId}`, { name, type, value }),
+
+  updateGlobalVariable: (variableId: string, value: any) =>
+    api.patch(`/variables/global/${variableId}`, { value }),
+
+  deleteGlobalVariable: (variableId: string) =>
+    api.delete(`/variables/global/${variableId}`),
+
+  // Local variables
+  getLocalVariables: (sceneId: string) =>
+    api.get(`/variables/local/scenes/${sceneId}`),
+
+  createLocalVariable: (sceneId: string, name: string, type: string, value?: any) =>
+    api.post(`/variables/local/scenes/${sceneId}`, { name, type, value }),
+
+  updateLocalVariable: (variableId: string, value: any) =>
+    api.patch(`/variables/local/${variableId}`, { value }),
+
+  deleteLocalVariable: (variableId: string) =>
+    api.delete(`/variables/local/${variableId}`),
+};
+
 export default api;
