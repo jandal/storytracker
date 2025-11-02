@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  password  String     // hashed
+
+  // Anthropic API Configuration
+  anthropicApiKey String?  // encrypted
+  anthropicModel  String?  // e.g., "claude-3-5-sonnet-20241022"
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  coverImage  String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  scenes      Scene[]
+  npcs        NPC[]
+  quests      Quest[]
+  variables   GlobalVariable[]
+  sessions    Session[]
+}
+
+model Scene {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  order       Int      @default(0)
+
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  // Node graph stored as JSONB
+  nodes       Json     @default("[]") // Array of node objects
+  edges       Json     @default("[]") // Array of edge objects
+  viewport    Json?    // { x, y, zoom }
+
+  variables   LocalVariable[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([campaignId])
+}
+
+model NPC {
+  id          String   @id @default(cuid())
+  name        String
+  race        String?
+  class       String?
+  level       Int?
+
+  // D&D Stats (as JSON object)
+  stats       Json?    // { str, dex, con, int, wis, cha }
+  armorClass  Int?
+  hitPoints   Int?
+
+  // Character Info
+  personality String?
+  appearance  String?
+  backstory   String?
+  portrait    String?  // URL to image
+
+  // Relationships
+  faction     String?
+  location    String?
+
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([campaignId])
+}
+
+model Quest {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  objectives  Json        // Array of { id, text, completed }
+  status      QuestStatus @default(NOT_STARTED)
+
+  campaignId  String
+  campaign    Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([campaignId])
+}
+
+enum QuestStatus {
+  NOT_STARTED
+  ACTIVE
+  COMPLETED
+  FAILED
+}
+
+model GlobalVariable {
+  id          String       @id @default(cuid())
+  name        String
+  type        VariableType
+  value       Json         // Stores any type
+
+  campaignId  String
+  campaign    Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, name])
+  @@index([campaignId])
+}
+
+model LocalVariable {
+  id          String       @id @default(cuid())
+  name        String
+  type        VariableType
+  value       Json
+
+  sceneId     String
+  scene       Scene        @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+
+  @@unique([sceneId, name])
+  @@index([sceneId])
+}
+
+enum VariableType {
+  STRING
+  NUMBER
+  BOOLEAN
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  sessionNum  Int
+  date        DateTime
+  notes       String?
+  duration    Int?     // minutes
+
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@index([campaignId])
+}
