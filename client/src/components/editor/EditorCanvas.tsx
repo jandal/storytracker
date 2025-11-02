@@ -11,7 +11,19 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { useEffect, useCallback } from 'react';
 import { useEditorStore } from '../../stores/editorStore';
-import { StartNode, DialogueNode, ChoiceNode, BranchNode } from './nodes';
+import {
+  StartNode,
+  DialogueNode,
+  ChoiceNode,
+  BranchNode,
+  VariableSetNode,
+  VariableGetNode,
+  NPCNode,
+  EncounterNode,
+  QuestNode,
+  RunSceneNode,
+  CommentNode,
+} from './nodes';
 import { CustomNode } from '../../shared/src/types';
 
 const nodeTypes = {
@@ -19,6 +31,13 @@ const nodeTypes = {
   dialogue: DialogueNode,
   choice: ChoiceNode,
   branch: BranchNode,
+  variable_set: VariableSetNode,
+  variable_get: VariableGetNode,
+  npc: NPCNode,
+  encounter: EncounterNode,
+  quest: QuestNode,
+  run_scene: RunSceneNode,
+  comment: CommentNode,
 };
 
 export function EditorCanvas() {

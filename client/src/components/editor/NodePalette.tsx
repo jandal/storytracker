@@ -9,6 +9,13 @@ const NODE_TYPES = [
   { type: 'dialogue', icon: '💬', label: 'Dialogue', color: 'bg-blue-700' },
   { type: 'choice', icon: '🎯', label: 'Choice', color: 'bg-purple-700' },
   { type: 'branch', icon: '🔀', label: 'Branch', color: 'bg-orange-700' },
+  { type: 'variable_set', icon: '📝', label: 'Set Var', color: 'bg-cyan-700' },
+  { type: 'variable_get', icon: '🔍', label: 'Get Var', color: 'bg-cyan-700' },
+  { type: 'npc', icon: '🧙', label: 'NPC', color: 'bg-red-700' },
+  { type: 'encounter', icon: '⚔️', label: 'Encounter', color: 'bg-red-900' },
+  { type: 'quest', icon: '📜', label: 'Quest', color: 'bg-yellow-700' },
+  { type: 'run_scene', icon: '▶️', label: 'Run Scene', color: 'bg-indigo-700' },
+  { type: 'comment', icon: '💬', label: 'Comment', color: 'bg-gray-700' },
 ];
 
 export function NodePalette() {

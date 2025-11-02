@@ -87,6 +87,99 @@ export function PropertiesPanel() {
           </div>
         )}
 
+        {/* Variable Set-specific fields */}
+        {selectedNode.data.type === 'variable_set' && (
+          <>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">Variable Name</label>
+              <input
+                type="text"
+                value={selectedNode.data.variableName || ''}
+                onChange={(e) => updateNode(selectedNode.id, { variableName: e.target.value })}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">Operation</label>
+              <select
+                value={selectedNode.data.operation || 'set'}
+                onChange={(e) => updateNode(selectedNode.id, { operation: e.target.value })}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+              >
+                <option value="set">Set</option>
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">Is Global?</label>
+              <input
+                type="checkbox"
+                checked={selectedNode.data.isGlobal || false}
+                onChange={(e) => updateNode(selectedNode.id, { isGlobal: e.target.checked })}
+                className="px-3 py-2"
+              />
+            </div>
+          </>
+        )}
+
+        {/* Quest-specific fields */}
+        {selectedNode.data.type === 'quest' && (
+          <div>
+            <label className="block text-gray-300 text-sm font-medium mb-1">Action</label>
+            <select
+              value={selectedNode.data.action || 'start'}
+              onChange={(e) => updateNode(selectedNode.id, { action: e.target.value })}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+            >
+              <option value="start">Start Quest</option>
+              <option value="update_objective">Update Objective</option>
+              <option value="complete">Complete</option>
+              <option value="fail">Fail</option>
+            </select>
+          </div>
+        )}
+
+        {/* Run Scene-specific fields */}
+        {selectedNode.data.type === 'run_scene' && (
+          <>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">Scene Name</label>
+              <input
+                type="text"
+                value={selectedNode.data.sceneName || ''}
+                onChange={(e) => updateNode(selectedNode.id, { sceneName: e.target.value })}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">Return to Source?</label>
+              <input
+                type="checkbox"
+                checked={selectedNode.data.returnToSource || false}
+                onChange={(e) => updateNode(selectedNode.id, { returnToSource: e.target.checked })}
+                className="px-3 py-2"
+              />
+            </div>
+          </>
+        )}
+
+        {/* Comment-specific fields */}
+        {selectedNode.data.type === 'comment' && (
+          <div>
+            <label className="block text-gray-300 text-sm font-medium mb-1">Comment Text</label>
+            <textarea
+              value={selectedNode.data.text || ''}
+              onChange={(e) => updateNode(selectedNode.id, { text: e.target.value })}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:outline-none focus:border-blue-500 resize-none"
+              rows={3}
+              placeholder="Write a note..."
+            />
+          </div>
+        )}
+
         <div className="pt-4 border-t border-gray-700">
           <p className="text-xs text-gray-500">Node ID: {selectedNode.id}</p>
           <p className="text-xs text-gray-500">Type: {selectedNode.data.type}</p>

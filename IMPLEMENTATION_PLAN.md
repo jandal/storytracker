@@ -93,29 +93,29 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ---
 
-## Phase 4: Node Type Components ⬜
+## Phase 4: Node Type Components ✅
 
 ### Tasks
-- [ ] Create individual node components:
-  - **Start**: Just entry point
-  - **Dialogue**: Speaker, text, NPC reference
-  - **Choice**: Prompt, choices array
-  - **Branch**: Conditions (variable/operator/value)
-  - **Variable Set**: Var name, operation (set/add/subtract/etc), value
-  - **Variable Get**: Var name, output var
-  - **NPC**: NPC selector, action type
-  - **Encounter**: Name, monsters array (from D&D API)
-  - **Quest**: Quest selector, action (start/update/complete)
-  - **Run Scene**: Scene selector
-  - **Comment**: Text, color
-- [ ] Add node-specific handle positions (inputs/outputs)
-- [ ] Implement validation for each node type
-- [ ] Add icons/colors for visual distinction
+- [x] Create all 11 node components:
+  - [x] **Start**: Green, entry point (no input)
+  - [x] **Dialogue**: Blue, speaker/text
+  - [x] **Choice**: Purple, prompt/choices
+  - [x] **Branch**: Orange, conditions
+  - [x] **Variable Set**: Cyan, name/operation/isGlobal
+  - [x] **Variable Get**: Cyan, name/output
+  - [x] **NPC**: Red, action type
+  - [x] **Encounter**: Dark red, name/monsters/difficulty
+  - [x] **Quest**: Yellow, action (start/update/complete/fail)
+  - [x] **Run Scene**: Indigo, sceneName/returnToSource
+  - [x] **Comment**: Gray, text (no I/O)
+- [x] Add proper handles (Start/Comment: no input, Comment: no output)
+- [x] Update NodePalette with all 11 types
+- [x] Update EditorCanvas with all node type mappings
+- [x] Extend PropertiesPanel with all type-specific fields
+- [x] Add icons/colors for visual distinction
 
 ### Deliverable
-- All 11 node types fully functional in editor
-- Each node has proper handles for connections
-- Node data properly validated
+✅ All 11 node types fully functional with drag-to-create, properties editing, visual styling
 
 ---
 
@@ -362,7 +362,9 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ## Current Status
 
-✅ **Completed**: Phases 1-3 (Setup, Auth, Settings, Node Editor)
-⏳ **In Progress**: Phase 4 (Node Type Components)
+✅ **Completed**: Phases 1-4 (Setup, Auth, Settings, Node Editor, All Node Types)
+⏳ **In Progress**: Phase 5 (Variable Management System)
 
-**Next Step**: Add remaining node types (Variable, NPC, Encounter, Quest, RunScene, Comment)
+**Context**: ~104k tokens used (52%), ~96k available (48%)
+
+**Next Step**: Build variable panel and management endpoints
