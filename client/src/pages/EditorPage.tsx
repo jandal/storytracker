@@ -6,6 +6,7 @@ import { EditorCanvas } from '../components/editor/EditorCanvas';
 import { NodePalette } from '../components/editor/NodePalette';
 import { PropertiesPanel } from '../components/editor/PropertiesPanel';
 import { VariablesPanel } from '../components/editor/VariablesPanel';
+import { campaignsApi } from '../api/client';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomNode } from '../shared/src/types';
 
@@ -17,15 +18,32 @@ function EditorContent() {
   const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'variables'>('properties');
 
   useEffect(() => {
-    if (!sceneId) {
+    if (!sceneId || !campaignId) {
       navigate('/campaigns');
       return;
     }
 
-    // TODO: Load scene from API
-    // For now, initialize empty scene
-    setScene(sceneId, 'New Scene', { nodes: [], edges: [], viewport: { x: 0, y: 0, zoom: 1 } });
-  }, [sceneId, navigate, setScene]);
+    // Load scene from API
+    const loadScene = async () => {
+      try {
+        const response = await campaignsApi.getScene(campaignId, sceneId);
+        const scene = response.data;
+
+        // Parse JSON strings to objects for nodes and edges
+        const nodes = typeof scene.nodes === 'string' ? JSON.parse(scene.nodes) : scene.nodes;
+        const edges = typeof scene.edges === 'string' ? JSON.parse(scene.edges) : scene.edges;
+        const viewport = typeof scene.viewport === 'string' ? JSON.parse(scene.viewport) : (scene.viewport || { x: 0, y: 0, zoom: 1 });
+
+        setScene(sceneId, scene.name, { nodes, edges, viewport });
+      } catch (error) {
+        console.error('Failed to load scene:', error);
+        // Fallback to empty scene if load fails
+        setScene(sceneId, 'New Scene', { nodes: [], edges: [], viewport: { x: 0, y: 0, zoom: 1 } });
+      }
+    };
+
+    loadScene();
+  }, [sceneId, campaignId, navigate, setScene]);
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();

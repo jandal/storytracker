@@ -109,6 +109,9 @@ export const campaignsApi = {
   getScenes: (campaignId: string) =>
     api.get(`/campaigns/${campaignId}/scenes`),
 
+  getScene: (campaignId: string, sceneId: string) =>
+    api.get(`/campaigns/${campaignId}/scenes/${sceneId}`),
+
   createScene: (campaignId: string, name: string, description?: string) =>
     api.post(`/campaigns/${campaignId}/scenes`, { name, description }),
 
