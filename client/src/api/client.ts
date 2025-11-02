@@ -170,4 +170,22 @@ export const questsApi = {
     api.delete(`/quests/${questId}`),
 };
 
+// ============ AI Endpoints ============
+export const aiApi = {
+  generateDialogue: (speaker: string, npcPersonality?: string, sceneSoFar?: string, campaignContext?: string) =>
+    api.post('/ai/generate-dialogue', { speaker, npcPersonality, sceneSoFar, campaignContext }),
+
+  generateNPC: (name: string, role?: string, campaignSetting?: string) =>
+    api.post('/ai/generate-npc', { name, role, campaignSetting }),
+
+  suggestBranches: (currentScene: string, playerActions?: string, campaignGoal?: string, numberOfSuggestions?: number) =>
+    api.post('/ai/suggest-branches', { currentScene, playerActions, campaignGoal, numberOfSuggestions }),
+
+  generateQuest: (questTheme?: string, campaignContext?: string, rewardType?: string) =>
+    api.post('/ai/generate-quest', { questTheme, campaignContext, rewardType }),
+
+  analyzeCampaign: (campaignId: string) =>
+    api.post('/api/analyze-campaign', { campaignId }),
+};
+
 export default api;

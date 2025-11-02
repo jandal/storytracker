@@ -1,5 +1,6 @@
 import { useEditorStore } from '../../stores/editorStore';
 import { CustomNode } from '../../shared/src/types';
+import { AIAssistant } from '../ai/AIAssistant';
 
 export function PropertiesPanel() {
   const { nodes, selectedNodeId, updateNode, deleteNode } = useEditorStore();
@@ -70,6 +71,11 @@ export function PropertiesPanel() {
                 placeholder="What the character says..."
               />
             </div>
+            <AIAssistant
+              type="dialogue"
+              context={{ speaker: selectedNode.data.speaker }}
+              onGenerate={(data) => updateNode(selectedNode.id, { text: data.dialogue })}
+            />
           </>
         )}
 
