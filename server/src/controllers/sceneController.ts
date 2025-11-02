@@ -69,8 +69,8 @@ export async function createScene(req: AuthRequest, res: Response) {
         description: description || null,
         order,
         campaignId,
-        nodes: [],
-        edges: [],
+        nodes: JSON.stringify([]),
+        edges: JSON.stringify([]),
       },
       include: {
         variables: true,
