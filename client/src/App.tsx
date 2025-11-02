@@ -5,6 +5,8 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { SettingsPage } from './pages/SettingsPage';
+import { CampaignListPage } from './pages/CampaignListPage';
+import { EditorPage } from './pages/EditorPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -24,6 +26,22 @@ function App() {
           element={
             <ProtectedRoute>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/campaigns"
+          element={
+            <ProtectedRoute>
+              <CampaignListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/campaigns/:campaignId/scenes/:sceneId"
+          element={
+            <ProtectedRoute>
+              <EditorPage />
             </ProtectedRoute>
           }
         />

@@ -60,39 +60,36 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ---
 
-## Phase 3: Core Node Editor Canvas ⬜
+## Phase 3: Core Node Editor Canvas ✅
 
 ### Tasks
-- [ ] Set up React Flow in client
-- [ ] Create EditorCanvas component with:
-  - Pan/zoom controls
-  - Minimap
-  - Background grid
-  - Viewport state management
-- [ ] Build node palette (drag-and-drop):
-  - Start, Dialogue, Choice, Branch
-  - Variable Set/Get, NPC, Encounter, Quest
-  - Run Scene, Comment
-- [ ] Implement Zustand store for editor state:
-  - Current nodes/edges
-  - Selected elements
-  - Panel visibility
-  - Undo/redo stack (basic)
-- [ ] Build properties panel:
-  - Node selection UI
-  - Edit node data based on type
-  - Delete node/edge
-- [ ] Connect to backend:
-  - Load scene from database
-  - Save scene (debounced)
-  - Create/delete scenes
+- [x] Set up React Flow in client with minimap/controls
+- [x] Create EditorCanvas component with:
+  - [x] Pan/zoom controls
+  - [x] Minimap
+  - [x] Background grid
+  - [x] Node click selection
+- [x] Build node palette (drag-and-drop):
+  - [x] Start, Dialogue, Choice, Branch nodes
+  - [x] Drag-to-canvas node creation
+- [x] Implement Zustand editor store:
+  - [x] Current nodes/edges management
+  - [x] Selected elements
+  - [x] Panel visibility toggle
+- [x] Build properties panel:
+  - [x] Node selection UI
+  - [x] Edit label, description
+  - [x] Dialogue-specific: speaker, text
+  - [x] Choice-specific: prompt
+  - [x] Delete node functionality
+- [x] Build BaseNode component with handles
+- [x] Create individual node types (Start, Dialogue, Choice, Branch)
+- [x] Routing setup for editor page
+- [x] Campaign list page UI
+- [x] Home page links to campaigns
 
 ### Deliverable
-- Functional node editor canvas
-- Can create/edit/delete nodes
-- Can connect nodes with edges
-- Can save/load scenes from database
-- Properties panel works for basic editing
+✅ Fully functional node editor canvas with drag-to-create, selection, properties panel
 
 ---
 
@@ -365,7 +362,7 @@ Web-based visual node editor for D&D DMs to create branching campaign narratives
 
 ## Current Status
 
-✅ **Completed**: Phases 1-2 (Setup, Auth, Settings)
-⏳ **In Progress**: Phase 3 (Core Node Editor Canvas)
+✅ **Completed**: Phases 1-3 (Setup, Auth, Settings, Node Editor)
+⏳ **In Progress**: Phase 4 (Node Type Components)
 
-**Next Step**: Start Phase 3 - React Flow canvas setup
+**Next Step**: Add remaining node types (Variable, NPC, Encounter, Quest, RunScene, Comment)

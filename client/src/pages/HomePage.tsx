@@ -60,17 +60,24 @@ export function HomePage() {
           </div>
 
           <div className="mt-12 p-6 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-            <h3 className="text-xl font-semibold text-blue-300 mb-2">Phase 1 Complete!</h3>
+            <h3 className="text-xl font-semibold text-blue-300 mb-2">Phase 3 Complete!</h3>
             <p className="text-gray-400 mb-4">
-              Authentication and settings system are now live. Configure your Anthropic API key in
-              Settings to start using AI features.
+              Node editor canvas is ready! Start creating your campaigns.
             </p>
-            <Link
-              to="/settings"
-              className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
-            >
-              Configure API Key →
-            </Link>
+            <div className="flex gap-4">
+              <Link
+                to="/campaigns"
+                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
+              >
+                Create Campaign →
+              </Link>
+              <Link
+                to="/settings"
+                className="inline-block px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
+              >
+                Configure API Key
+              </Link>
+            </div>
           </div>
         </div>
       </div>
